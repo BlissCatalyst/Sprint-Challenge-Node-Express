@@ -1,11 +1,13 @@
 const express = require('express');
 const helmet = require('helmet');
 
-const dbConfig = require('./data/dbConfig.js');
+const endpoints = require('./endpoints.js');
 
 const server = express();
 
 server.use(helmet());
 server.use(express.json());
+
+server.use('/api/endpoints', endpoints);
 
 module.exports = server;
