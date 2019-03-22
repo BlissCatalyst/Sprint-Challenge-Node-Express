@@ -68,6 +68,57 @@ router.post('/:projectId', async (req, res) => {
 });
 
 // Update requests *********************
+router.put('/:projectId', async (req, res) => {
+  try {
+    const id = req.params.projectId;
+    const changes = req.body;
+    const updatePrj = await project.update(id, changes);
+    if(changes.description && changes.name) {
+      if(res.body) {
+        res.status(201).json(res.body);
+      } else {
+        res.status(404).json({
+          message: "Error - project does not exist."
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "To update project: need description and name."
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error - can't update project."
+    });
+  }
+});
+
+router.put('/:actionId', async (req, res) => {
+  try {
+    const id = req.params.actionId;
+    const changes = req.body;
+    const updateAct = await action.update(id, changes);
+    if(changes.description && changes.notes && changes.project_id) {
+      if(res.body) {
+        res.status(201).json(res.body);
+      } else {
+        res.status(404).json({
+          message: "Error - action does not exist."
+        });
+      }
+    } else {
+      res.status(400).json({
+        message: "To update action: need description, notes, and the project ID."
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error - can't update action."
+    });
+  }
+});
 
 // Delete requests ********************
 router.delete('/:projectId', async (req, res) => {
