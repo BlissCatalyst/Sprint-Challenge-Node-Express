@@ -5,7 +5,7 @@ const action = require('./data/helpers/actionModel.js');
 
 const router = express.Router();
 
-// Get Requests
+// Get Requests **********************
 router.get('/', async (req, res) => {
   try {
     const data = await project.get();
@@ -30,7 +30,7 @@ router.get('/:projectId', async (req, res) => {
   }
 });
 
-// Post Requests
+// Post Requests *************************
 router.post('/', async (req, res) => {
   try {
     const newProject = await project.insert(req.body);
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 router.post('/:projectId', async (req, res) => {
   try {
     const newAction = await action.insert(req.body);
-    if(newAction.porject_id && newAction.description && newAction.notes) {
+    if(newAction.project_id && newAction.description && newAction.notes) {
       res.status(201).json(res.body);
     } else {
       res.status(400).json({
@@ -62,7 +62,33 @@ router.post('/:projectId', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Error from server."
+      message: "Server Error - can't update."
+    });
+  }
+});
+
+// Update requests *********************
+
+// Delete requests ********************
+router.delete('/:projectId', async (req, res) => {
+  try {
+    const delProject = await project.remove(req.params.projectId);
+    res.status(200).end();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error - can't delete project."
+    });
+  }
+});
+
+router.delete('/:actionId', async (req, res) => {
+  try {
+    const delAction = await action.remove(req.params.actionId);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error - can't delete action."
     });
   }
 });
