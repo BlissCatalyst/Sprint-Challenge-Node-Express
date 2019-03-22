@@ -123,7 +123,7 @@ router.put('/action/:actionId', async (req, res) => {
 });
 
 // Delete requests ********************
-router.delete('/:projectId', async (req, res) => {
+router.delete('/project/:projectId', async (req, res) => {
   try {
     const delProject = await project.remove(req.params.projectId);
     if(delProject) {
@@ -141,9 +141,16 @@ router.delete('/:projectId', async (req, res) => {
   }
 });
 
-router.delete('/:actionId', async (req, res) => {
+router.delete('/action/:actionId', async (req, res) => {
   try {
     const delAction = await action.remove(req.params.actionId);
+    if(delAction) {
+      res.status(200).end();
+    } else {
+      res.status(404).json({
+        message: "No action found."
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({
