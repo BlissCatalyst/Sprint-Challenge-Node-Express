@@ -100,10 +100,10 @@ router.put('/action/:actionId', async (req, res) => {
   try {
     const id = req.params.actionId;
     const changes = req.body;
-    const updateAct = await action.update(id, changes);
     if(changes.description && changes.notes && changes.project_id) {
-      if(res.body) {
-        res.status(201).json(res.body);
+      const updateAct = await action.update(id, changes);
+      if(updateAct) {
+        res.status(201).json(updateAct);
       } else {
         res.status(404).json({
           message: "Error - action does not exist."
