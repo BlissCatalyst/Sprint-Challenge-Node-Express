@@ -40,7 +40,7 @@ router.post('/project', async (req, res) => {
     } else {
       res.status(400).json({
         message: "New Project must have a name and a description."
-      })
+      });
     }
   } catch (error) {
     console.log(error);
@@ -70,14 +70,14 @@ router.post('/action', async (req, res) => {
 });
 
 // Update requests *********************
-router.put('/:projectId', async (req, res) => {
+router.put('/project/:projectId', async (req, res) => {
   try {
     const id = req.params.projectId;
     const changes = req.body;
-    const updatePrj = await project.update(id, changes);
     if(changes.description && changes.name) {
-      if(res.body) {
-        res.status(201).json(res.body);
+      const updatePrj = await project.update(id, changes);
+      if(updatePrj) {
+        res.status(201).json(updatePrj);
       } else {
         res.status(404).json({
           message: "Error - project does not exist."
@@ -96,7 +96,7 @@ router.put('/:projectId', async (req, res) => {
   }
 });
 
-router.put('/:actionId', async (req, res) => {
+router.put('/action/:actionId', async (req, res) => {
   try {
     const id = req.params.actionId;
     const changes = req.body;
