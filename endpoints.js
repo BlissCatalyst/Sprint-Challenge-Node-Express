@@ -31,7 +31,7 @@ router.get('/:projectId', async (req, res) => {
 });
 
 // Post Requests *************************
-router.post('/', async (req, res) => {
+router.post('/project', async (req, res) => {
   try {
     const projectBody = req.body;
     if(projectBody.name && projectBody.description) {
@@ -50,11 +50,12 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/:projectId', async (req, res) => {
+router.post('/action', async (req, res) => {
   try {
-    const newAction = await action.insert(req.body);
-    if(newAction.project_id && newAction.description && newAction.notes) {
-      res.status(201).json(res.body);
+    const actionBody = req.body;
+    if(actionBody.project_id && actionBody.description && actionBody.notes) {
+      const newAction = await action.insert(actionBody);
+      res.status(201).json(newAction);
     } else {
       res.status(400).json({
         message: "New Action must have a valid project ID, description, and notes."
